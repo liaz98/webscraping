@@ -32,13 +32,12 @@ class SubCategorySerializer(serializers.ModelSerializer):
         fields = ["id", "name", "children",]
 
 class CategorySerializer(serializers.ModelSerializer):
-    parentCategory = serializers.PrimaryKeyRelatedField()
-    subCategory = serializers.SubCategorySerializer()
-    # subcategories = SubCategorySerializer(source="children", many=True, required=False)
-
+    parentCategory = serializers.PrimaryKeyRelatedField(read_only=True)
+    # subCategory = SubCategorySerializer()
+    subcategories = SubCategorySerializer(source="children", many=True, required=False)
     class Meta:
         model = Category
-        fields = ("parentCategory", "name",  "subcategories",)
+        fields = ("parentCategory", "name",  "subcategories")
 
     def get_related_field(self, model_field):
         # Handles initializing the `subcategories` field
